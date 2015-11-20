@@ -7,9 +7,13 @@ React flip card component
 ```sh
 meteor add universe:react-flipcard
 ```
-## Examples
+## Usage
+Components of this package use universe:modules package for import/export.
+So you can import it by es6 import api `import FlipCard from '{universe:react-flipcard}`
+or by `System.import('universe:react-flipcard').then(function(module){/* your code */})` in regular js.
 
-         
+In CoffeeScript you can use package [universe:modules-for-coffee](https://atmospherejs.com/universe/modules-for-coffee)
+      
 ```
 import FlipCard from '{universe:react-flipcard}';
 export default React.createClass({
