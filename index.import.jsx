@@ -84,7 +84,7 @@ export default React.createClass({
                   'vertical': this.props.type === 'vertical',
                   'horizontal': this.props.type !== 'vertical',
                   'flipped': this.state.isFlipped,
-                  'disabled': !this.props.disabled
+                  'disabled': this.props.disabled
                 })}
                 tabIndex={0}
                 onFocus={this.handleFocus}
