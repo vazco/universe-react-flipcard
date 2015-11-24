@@ -9,7 +9,6 @@ export default React.createClass({
         flipped: PropTypes.bool,
         disabled: PropTypes.bool,
         onFlip: PropTypes.func,
-        onClick: PropTypes.func,
         children(props, propName, componentName) {
             const prop = props[propName];
 
@@ -42,23 +41,10 @@ export default React.createClass({
         this._hideFlippedSide();
     },
 
-    componentWillReceiveProps(newProps) {
-        this.setState({
-            isFlipped: newProps.flipped
-        });
-    },
-
-    componentWillUpdate(nextProps, nextState) {
-        if (this.state.isFlipped !== nextState.isFlipped) {
-            this.notifyFlip = true;
-        }
-    },
-
     componentDidUpdate() {
-        if (this.notifyFlip && typeof this.props.onFlip === 'function') {
+        if (typeof this.props.onFlip === 'function') {
             this.props.onFlip(this.state.isFlipped);
             setTimeout(this._hideFlippedSide, 600);
-            this.notifyFlip = false;
         }
     },
 
@@ -69,12 +55,10 @@ export default React.createClass({
         }
     },
 
-    handleClick(e) {
+    handleClick(isFlipped, e) {
         if (this.props.disabled) return;
-        this.setState({isFlipped: !this.state.isFlipped});
-        if (typeof this.props.onClick === 'function') {
-            this.props.onClick(this.state.isFlipped, e);
-        }
+        isFlipped = !isFlipped;
+        this.setState({isFlipped});
     },
 
     render() {
@@ -88,7 +72,7 @@ export default React.createClass({
                 })}
                 tabIndex={0}
                 onFocus={this.handleFocus}
-                onClick={this.handleClick}
+                onClick={e => this.handleClick(this.state.isFlipped, e)}
             >
                 <div
                     className="flipper"

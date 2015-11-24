@@ -20,23 +20,16 @@ export default React.createClass({
     displayName: 'FlipedCheckbox',
     getInitialState() {
         return {
-            isFlipped: false
+            isFlipped: true
         };
-    },
-    handleOnClick() {
-        if (this.state.isFlipped) {
-            return this.setState({isFlipped: false});
-        }
-        this.setState({isFlipped: true});
     },
     render () {
         return (
             <FlipCard 
                 {/* horizontal is default */}
               type="vertical" 
-              onClick={this.handleOnClick}
-              {/* current state */}
-              flipped={true}
+              {/* default state */}
+              flipped={this.state.isFlipped}
               onFocus={()=>console.log} 
               onFlip={()=>console.log}
               >
