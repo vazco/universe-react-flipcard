@@ -1,6 +1,6 @@
 Package.describe({
   name: 'universe:react-flipcard',
-  version: '0.1.1',
+  version: '0.1.2',
   // Brief, one-line summary of the package.
   summary: 'React flip card component',
   // URL to the Git repository containing the source code for this package.
