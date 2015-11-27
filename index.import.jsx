@@ -55,10 +55,14 @@ export default React.createClass({
         }
     },
 
-    handleClick(isFlipped, e) {
+    handleClick: function(isFlipped, e) {
         if (this.props.disabled) return;
         isFlipped = !isFlipped;
         this.setState({isFlipped});
+    },
+
+    shouldComponentUpdate ({}, nextState) {
+        return this.state.isFlipped !== nextState.isFlipped;
     },
 
     render() {
