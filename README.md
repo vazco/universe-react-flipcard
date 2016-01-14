@@ -18,23 +18,18 @@ In CoffeeScript you can use package [universe:modules-for-coffee](https://atmosp
 import FlipCard from '{universe:react-flipcard}';
 export default React.createClass({
     displayName: 'FlipedCheckbox',
-    getInitialState() {
+
+    getDefaultProps () {
         return {
-            isFlipped: true
+            onChange () {}
         };
     },
+
     render () {
         return (
-            <FlipCard 
-                {/* horizontal is default */}
-              type="vertical" 
-              {/* default state */}
-              flipped={this.state.isFlipped}
-              onFocus={()=>console.log} 
-              onFlip={()=>console.log}
-              >
-                <i className="ui huge icon checkmark box" />
+            <FlipCard onFlip={this.props.onChange} flipped={this.props.checked}>
                 <i className="ui huge icon square outline"/>
+                <i className="ui huge icon checkmark box" />
             </FlipCard>
         );
     }

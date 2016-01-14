@@ -3,13 +3,13 @@ const PropTypes = React.PropTypes;
 
 export default React.createClass({
     displayName: 'ReactFlipCard',
-
+    mixins: [React.addons.PureRenderMixin],
     propTypes: {
         type: PropTypes.string,
         flipped: PropTypes.bool,
         disabled: PropTypes.bool,
         onFlip: PropTypes.func,
-        children(props, propName, componentName) {
+        children (props, propName, componentName) {
             const prop = props[propName];
 
             if (React.Children.count(prop) !== 2) {
@@ -23,60 +23,54 @@ export default React.createClass({
         }
     },
 
-    getDefaultProps() {
+    getDefaultProps () {
         return {
             type: 'horizontal',
             flipped: false,
-            disabled: false
+            disabled: false,
+            onFlip () {}
         };
     },
 
-    getInitialState() {
-        return {
-            isFlipped: this.props.flipped
-        };
-    },
-
-    componentDidMount() {
+    componentDidMount () {
         this._hideFlippedSide();
     },
 
-    componentDidUpdate() {
-        if (typeof this.props.onFlip === 'function') {
-            this.props.onFlip(this.state.isFlipped);
-            setTimeout(this._hideFlippedSide, 600);
+    componentDidUpdate () {
+        setTimeout(this._hideFlippedSide, 600);
+    },
+
+    handleFocus (event) {
+        if (this.props.disabled) return;
+        if (this.props.onFocus) {
+            this.props.onFocus(event);
         }
     },
 
-    handleFocus() {
+    handleClick (event) {
         if (this.props.disabled) return;
-        if (typeof this.props.onFocus === 'function') {
-            return this.props.onFocus(e);
+        if (this.props.onFlip) {
+            this.props.onFlip(!this.props.flipped, event);
         }
     },
 
-    handleClick: function(isFlipped, e) {
-        if (this.props.disabled) return;
-        isFlipped = !isFlipped;
-        this.setState({isFlipped});
+    shouldComponentUpdate ({flipped}) {
+        return this.props.flipped !== flipped;
     },
 
-    shouldComponentUpdate ({}, nextState) {
-        return this.state.isFlipped !== nextState.isFlipped;
-    },
-
-    render() {
+    render () {
         return (
-            <div className={classNames({
-                  'universe-flip-card': true,
-                  'vertical': this.props.type === 'vertical',
-                  'horizontal': this.props.type !== 'vertical',
-                  'flipped': this.state.isFlipped,
-                  'disabled': this.props.disabled
+            <div
+                className={classNames({
+                    'universe-flip-card': true,
+                    'vertical': this.props.type === 'vertical',
+                    'horizontal': this.props.type !== 'vertical',
+                    'flipped': this.props.flipped,
+                    'disabled': this.props.disabled
                 })}
                 tabIndex={0}
                 onFocus={this.handleFocus}
-                onClick={e => this.handleClick(this.state.isFlipped, e)}
+                onClick={this.handleClick}
             >
                 <div
                     className="flipper"
@@ -85,7 +79,7 @@ export default React.createClass({
                         className="universe-flip-card-front"
                         ref="front"
                         tabIndex={-1}
-                        aria-hidden={this.state.isFlipped}
+                        aria-hidden={this.props.flipped}
                     >
                         {this.props.children[0]}
                     </div>
@@ -93,7 +87,7 @@ export default React.createClass({
                         className="universe-flip-card-back"
                         ref="back"
                         tabIndex={-1}
-                        aria-hidden={!this.state.isFlipped}
+                        aria-hidden={!this.props.flipped}
                     >
                         {this.props.children[1]}
                     </div>
@@ -102,15 +96,17 @@ export default React.createClass({
         );
     },
 
-    _showBothSides() {
-        this.refs.front.style.display = '';
-        this.refs.back.style.display = '';
+    _showBothSides () {
+        if (this.isMounted()) {
+            this.refs.back.style.display = '';
+            this.refs.front.style.display = '';
+        }
     },
 
-    _hideFlippedSide() {
+    _hideFlippedSide () {
         // This prevents the flipped side from being tabbable
-        if (this.props.disabled) {
-            if (this.state.isFlipped) {
+        if (this.props.disabled && this.isMounted()) {
+            if (this.props.flipped) {
                 this.refs.front.style.display = 'none';
             } else {
                 this.refs.back.style.display = 'none';
