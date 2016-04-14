@@ -11,14 +11,14 @@ Package.describe({
 });
 
 Package.onUse(function (api) {
-    api.versionsFrom('1.2.1');
+    api.versionsFrom('1.3.1');
     api.use([
-        'universe:modules@0.6.6',
-        'universe:utilities-react@0.5.4',
+        'ecmascript',
+        'universe:utilities-react@1.0.0',
         'underscore'
     ]);
 
     api.addFiles('flip-card.css', 'client');
-    api.addFiles('index.import.jsx');
+    api.mainModule('index.jsx');
 
 });

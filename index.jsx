@@ -1,9 +1,9 @@
-import {classNames} from '{universe:utilities-react}';
+import React from 'react';
+import classNames from 'classnames';
 const PropTypes = React.PropTypes;
 
 export default React.createClass({
     displayName: 'ReactFlipCard',
-    mixins: [React.addons.PureRenderMixin],
     propTypes: {
         type: PropTypes.string,
         flipped: PropTypes.bool,
