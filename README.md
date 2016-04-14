@@ -8,7 +8,7 @@ React flip card component
 meteor add universe:react-flipcard
 ```
 ## Usage
-   
+
 ```
 import FlipCard from 'meteor/universe:react-flipcard';
 export default React.createClass({
